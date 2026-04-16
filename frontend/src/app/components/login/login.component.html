@@ -1,23 +1,32 @@
-<div class="glass-card" style="max-width: 450px; margin: 4rem auto; text-align: center;">
-  <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Portal Login</h2>
-  @if (errorMessage()) {
-    <div style="background: rgba(255, 107, 107, 0.1); color: var(--danger); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid rgba(255, 107, 107, 0.3);">{{ errorMessage() }}</div>
-  }
-  <form (ngSubmit)="onSubmit()" style="text-align: left;">
-    <div style="margin-bottom: 1.5rem;">
-      <label for="userEmail" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 500;">Access Email</label>
-      <input type="email" id="userEmail" [(ngModel)]="userEmail" name="userEmail" required style="width: 100%;">
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo">R</div>
+      <h2 style="font-size:1.5rem; color:var(--text-main);">Welcome back</h2>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.25rem;">Sign in to your RetailOrder account</p>
     </div>
-    <div style="margin-bottom: 2rem;">
-      <label for="passwordHash" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 500;">Secure Password</label>
-      <input type="password" id="passwordHash" [(ngModel)]="passwordHash" name="passwordHash" required style="width: 100%;">
-    </div>
-    <button type="submit" class="btn-primary" [disabled]="isLoading()" style="width: 100%; padding: 1rem !important; font-size: 1.1rem !important;">
-      {{ isLoading() ? 'Authenticating...' : 'Commence Login' }}
-    </button>
-  </form>
 
-  <div style="margin-top: 1.5rem; color: var(--text-muted);">
-    Don't have an account? <a routerLink="/register" style="color: var(--accent-color); text-decoration: none; font-weight: 500;">Create one here</a>
+    @if (errorMessage()) {
+      <div class="error-msg">{{ errorMessage() }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="userEmail">Email Address</label>
+        <input type="email" id="userEmail" [(ngModel)]="userEmail" name="userEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="passwordHash">Password</label>
+        <input type="password" id="passwordHash" [(ngModel)]="passwordHash" name="passwordHash" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn-primary" [disabled]="isLoading()" style="width:100%; margin-top:0.5rem;">
+        {{ isLoading() ? 'Signing in...' : 'Sign In' }}
+      </button>
+    </form>
+
+    <p style="text-align:center; margin-top:1.25rem; color:var(--text-muted); font-size:0.9rem;">
+      Don't have an account?
+      <a routerLink="/register" style="color:var(--primary); font-weight:600; text-decoration:none;">Register here</a>
+    </p>
   </div>
 </div>

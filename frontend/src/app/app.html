@@ -1,15 +1,57 @@
 <nav class="navbar">
-  <h1>Quantum Retail</h1>
+  <a routerLink="/products" class="navbar-brand">
+    <div class="logo-icon">R</div>
+    <span class="brand-name">RetailOrder</span>
+  </a>
+
   <div class="nav-links">
-    <a routerLink="/products" routerLinkActive="active">Catalog</a>
-    <a routerLink="/cart" routerLinkActive="active">Cart</a>
-    <a routerLink="/orders" routerLinkActive="active">Orders</a>
-    <a routerLink="/login" routerLinkActive="active">Login</a>
+    <a routerLink="/products" routerLinkActive="active">Products</a>
+    <a routerLink="/cart"     routerLinkActive="active">Cart</a>
+
+    <!-- ── NOT LOGGED IN ── -->
+    @if (!user) {
+      <a routerLink="/login" routerLinkActive="active" class="nav-btn">Login</a>
+    }
+
+    <!-- ── LOGGED IN ── -->
+    @if (user) {
+      <a routerLink="/orders" routerLinkActive="active">My Orders</a>
+
+      <div class="nav-account" (click)="toggleDropdown()">
+        <div class="avatar">{{ initials }}</div>
+        <div class="account-info">
+          <span class="account-name">{{ user.userName }}</span>
+          <span class="account-email">{{ user.userEmail }}</span>
+        </div>
+        <span class="chevron" [class.open]="showDropdown()">▾</span>
+
+        @if (showDropdown()) {
+          <div class="account-dropdown" (click)="$event.stopPropagation()">
+            <div class="dropdown-header">
+              <div class="avatar avatar-lg">{{ initials }}</div>
+              <div>
+                <div style="font-weight:700; color:var(--text-main); font-size:0.95rem;">{{ user.userName }}</div>
+                <div style="font-size:0.8rem; color:var(--text-muted);">{{ user.userEmail }}</div>
+              </div>
+            </div>
+            <hr style="border:none; border-top:1px solid var(--border-light); margin:0;">
+            <a routerLink="/orders" class="dropdown-item" (click)="closeDropdown()">
+              📋 &nbsp;My Orders
+            </a>
+            <a routerLink="/cart" class="dropdown-item" (click)="closeDropdown()">
+              🛒 &nbsp;My Cart
+            </a>
+            <hr style="border:none; border-top:1px solid var(--border-light); margin:0;">
+            <button class="dropdown-item dropdown-logout" (click)="logout()">
+              🚪 &nbsp;Logout
+            </button>
+          </div>
+        }
+      </div>
+    }
   </div>
 </nav>
 
-<main class="main-layout">
+<main class="main-layout" (click)="closeDropdown()">
   <router-outlet></router-outlet>
 </main>
-
-
