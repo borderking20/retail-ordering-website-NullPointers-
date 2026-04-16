@@ -3,6 +3,8 @@ using backend.Helpers;
 using backend.Models;
 using backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using BCrypt.Net;
+
 
 namespace backend.Services.Implementations
 {
@@ -21,29 +23,29 @@ namespace backend.Services.Implementations
         {
             var user = new User
             {
-                userName = request.userName,
-                userEmail = request.userEmail,
-                passwordHash = BCrypt.Net.BCrypt.HashPassword(request.password),
-                userRole = "User"
+                UserName = request.userName,
+                UserEmail = request.userEmail,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.password),
+                UserRole = "User"
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return _jwtHelper.GenerateToken(user.userId, user.userEmail, user.userRole);
+            return _jwtHelper.GenerateToken(user.UserId, user.UserEmail, user.UserRole);
         }
 
         public async Task<string> LoginAsync(LoginRequestDto request)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(x => x.userEmail == request.userEmail);
+                .FirstOrDefaultAsync(x => x.UserEmail == request.UserEmail);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(request.password, user.passwordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
                 throw new Exception("Invalid credentials");
             }
 
-            return _jwtHelper.GenerateToken(user.userId, user.userEmail, user.userRole);
+            return _jwtHelper.GenerateToken(user.UserId, user.UserEmail, user.UserRole);
         }
     }
 }
