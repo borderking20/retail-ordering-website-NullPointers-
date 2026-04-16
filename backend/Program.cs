@@ -1,8 +1,16 @@
+using backend.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<AppDbContext>(options => { 
+    options.UseSqlServer("Server= ABDULLAH\\SQLEXPRESS;Database=RetailOrderDB;Trusted_Connection=True;TrustServerCertificate=True");
+    });
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
