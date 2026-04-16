@@ -7,6 +7,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
+//completed the package installation
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
