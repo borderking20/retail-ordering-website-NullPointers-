@@ -1,0 +1,32 @@
+<div class="glass-card" style="max-width: 450px; margin: 4rem auto; text-align: center;">
+  <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Create Account</h2>
+  
+  @if (errorMessage()) {
+    <div style="background: rgba(255, 107, 107, 0.1); color: var(--danger); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid rgba(255, 107, 107, 0.3);">{{ errorMessage() }}</div>
+  }
+  
+  <form (ngSubmit)="onSubmit()" style="text-align: left;">
+    <div style="margin-bottom: 1.5rem;">
+      <label for="userName" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 500;">Full Name</label>
+      <input type="text" id="userName" [(ngModel)]="userName" name="userName" required style="width: 100%;">
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <label for="userEmail" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 500;">Email Address</label>
+      <input type="email" id="userEmail" [(ngModel)]="userEmail" name="userEmail" required style="width: 100%;">
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+      <label for="passwordHash" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 500;">Secure Password</label>
+      <input type="password" id="passwordHash" [(ngModel)]="passwordHash" name="passwordHash" required style="width: 100%;">
+    </div>
+
+    <button type="submit" class="btn-primary" [disabled]="isLoading()" style="width: 100%; padding: 1rem !important; font-size: 1.1rem !important;">
+      {{ isLoading() ? 'Registering...' : 'Complete Registration' }}
+    </button>
+  </form>
+
+  <div style="margin-top: 1.5rem; color: var(--text-muted);">
+    Already have an account? <a routerLink="/login" style="color: var(--accent-color); text-decoration: none; font-weight: 500;">Login here</a>
+  </div>
+</div>
