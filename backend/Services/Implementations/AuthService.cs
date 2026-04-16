@@ -1,4 +1,4 @@
-﻿using backend.DTOs.Auth;
+using backend.DTOs.Auth;
 using backend.Helpers;
 using backend.Models;
 using backend.Services.Interfaces;
@@ -23,9 +23,9 @@ namespace backend.Services.Implementations
         {
             var user = new User
             {
-                UserName = request.userName,
-                UserEmail = request.userEmail,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.password),
+                UserName = request.UserName,
+                UserEmail = request.UserEmail,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 UserRole = "User"
             };
 

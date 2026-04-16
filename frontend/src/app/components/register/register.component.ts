@@ -15,14 +15,14 @@ export class RegisterComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
-  userName = signal('');
-  userEmail = signal('');
-  passwordHash = signal('');
+  userName = '';
+  userEmail = '';
+  passwordHash = '';
   errorMessage = signal('');
   isLoading = signal(false);
 
   async onSubmit() {
-    if (!this.userName() || !this.userEmail() || !this.passwordHash()) {
+    if (!this.userName || !this.userEmail || !this.passwordHash) {
       this.errorMessage.set('All fields are required.');
       return;
     }
@@ -31,9 +31,9 @@ export class RegisterComponent {
     this.errorMessage.set('');
 
     const success = await this.authService.register(
-      this.userName(),
-      this.userEmail(),
-      this.passwordHash()
+      this.userName,
+      this.userEmail,
+      this.passwordHash
     );
     
     this.isLoading.set(false);
@@ -41,7 +41,7 @@ export class RegisterComponent {
     if (success) {
       this.router.navigate(['/products']);
     } else {
-      this.errorMessage.set('Registration failed. Try again.');
+      this.errorMessage.set('Registration failed. Email may already be in use.');
     }
   }
 }

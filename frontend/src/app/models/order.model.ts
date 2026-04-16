@@ -15,7 +15,7 @@ export interface Order {
   totalAmount: number;
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   createdAt: string;
-  items: OrderItem[];
+  orderItems: OrderItem[];
 }
 
 export interface CartItem {

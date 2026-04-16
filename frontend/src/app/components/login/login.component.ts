@@ -15,8 +15,8 @@ export class LoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
-  userEmail = signal('test@example.com');
-  passwordHash = signal('password');
+  userEmail = '';
+  passwordHash = '';
   errorMessage = signal('');
   isLoading = signal(false);
 
@@ -24,14 +24,14 @@ export class LoginComponent {
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    const success = await this.authService.login(this.userEmail(), this.passwordHash());
+    const success = await this.authService.login(this.userEmail, this.passwordHash);
     
     this.isLoading.set(false);
     
     if (success) {
       this.router.navigate(['/products']);
     } else {
-      this.errorMessage.set('Invalid email or password');
+      this.errorMessage.set('Invalid email or password. Please try again.');
     }
   }
 }

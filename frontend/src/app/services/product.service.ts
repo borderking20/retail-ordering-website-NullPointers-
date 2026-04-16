@@ -1,63 +1,37 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Product } from '../models/product.model';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  readonly productList = signal<Product[]>([
-    {
-      productId: 'p1',
-      productName: 'Fresh Apples',
-      description: 'Crisp and sweet fresh apples.',
-      productPrice: 250,
-      imageUrl: '/images/fresh_apples.png',
-      productCategory: 'Fruits',
-      productStock: 50
-    },
-    {
-      productId: 'p2',
-      productName: 'Organic Bananas',
-      description: 'A bunch of ripe bananas.',
-      productPrice: 80,
-      imageUrl: '/images/organic_bananas.png',
-      productCategory: 'Fruits',
-      productStock: 30
-    },
-    {
-      productId: 'p3',
-      productName: 'Whole Milk',
-      description: '1 Gallon of whole milk.',
-      productPrice: 65,
-      imageUrl: '/images/whole_milk.png',
-      productCategory: 'Dairy',
-      productStock: 20
-    }
-  ]);
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = 'http://localhost:5105/api/product';
+  
+  readonly productList = signal<Product[]>([]);
+  readonly selectedProduct = signal<Product | null>(null);
+  readonly productQuantity = signal<number>(1);
 
   async GetAllProductsAsync(): Promise<Product[]> {
-    return this.productList();
+    try {
+      const products = await firstValueFrom(this.http.get<Product[]>(this.apiUrl));
+      this.productList.set(products);
+      return products;
+    } catch (error) {
+      console.error('Error fetching products', error);
+      return [];
+    }
   }
 
   getProductById(productId: string): Product | undefined {
-    return this.productList().find(p => p.productId === productId);
+    return this.productList().find(p => p.productId.toString() === productId.toString());
   }
 
-  async ReduceProductStock(productId: string, productQuantity: number): Promise<boolean> {
-    const currentProducts = this.productList();
-    const productIndex = currentProducts.findIndex(p => p.productId === productId);
-    
-    if (productIndex !== -1 && currentProducts[productIndex].productStock >= productQuantity) {
-      this.productList.update(products => {
-        const updated = [...products];
-        updated[productIndex] = {
-           ...updated[productIndex], 
-           productStock: updated[productIndex].productStock - productQuantity
-        };
-        return updated;
-      });
-      return true;
-    }
-    return false;
+  async ReduceProductStock(productId: string, quantity: number): Promise<boolean> {
+    // In a real app, this would be an API call. 
+    // For now, let's just update local state if successful on backend order creation.
+    return true; 
   }
 }

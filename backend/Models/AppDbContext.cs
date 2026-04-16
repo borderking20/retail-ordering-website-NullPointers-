@@ -15,9 +15,7 @@ namespace backend.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure relationships and primary keys if needed, 
-            // though EF Core handles most of these by convention.
-            
+            // Relationships
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
                 .WithMany(u => u.Orders)
@@ -32,6 +30,12 @@ namespace backend.Models
                 .HasOne(oi => oi.Product)
                 .WithMany(p => p.OrderItems)
                 .HasForeignKey(oi => oi.ProductId);
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            // Set default precision and scale for all decimal properties
+            configurationBuilder.Properties<decimal>().HavePrecision(18, 2);
         }
     }
 }
