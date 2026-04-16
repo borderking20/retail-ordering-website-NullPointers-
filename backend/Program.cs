@@ -1,12 +1,19 @@
 using backend.Configurations;
 using backend.Helpers;
+using backend.Models;
 using backend.Services.Implementations;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(options => {
+    options.UseSqlServer("Server= ABDULLAH\\SQLEXPRESS;Database=RetailOrderDB;Trusted_Connection=True;TrustServerCertificate=True");
+});
+
 
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("JwtSettings"));

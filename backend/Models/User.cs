@@ -10,6 +10,8 @@ namespace backend.Models
         public string PasswordHash { get; set; } = string.Empty;
         public string UserRole { get; set; } = "User";
 
+        public string UserRole { get; set; } = "User"; 
+
         public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }
